@@ -3,6 +3,7 @@ package config
 import (
 	"fmt"
 
+	"github.com/geniee-ai/geniee-cli/internal/helpers"
 	"github.com/spf13/viper"
 )
 
@@ -14,6 +15,11 @@ type Config struct {
 var Cfg Config
 
 func LoadConfig() (*Config, error) {
+
+	if !helpers.IsExists("$HOME/.geniee/config.json") {
+		return nil, fmt.Errorf("could not find config.json")
+	}
+
 	viper.SetConfigName("config")        // name of config file (without extension)
 	viper.SetConfigType("json")          // REQUIRED if the config file does not have the extension in the name
 	viper.AddConfigPath("$HOME/.geniee") // path to look for the config file in

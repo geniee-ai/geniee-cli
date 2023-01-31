@@ -79,8 +79,9 @@ func AskCmd(cCtx *cli.Context) error {
 
 	cfg, err := config.LoadConfig()
 	if err != nil {
-		rgb.Red.Println("Could not load config file. If not present, May be try \"geniee login\" first.")
+		rgb.Red.Println("\nCould not load config file. Please validate config.json file in ~/.geniee/config.json")
 		fmt.Println("")
+		rgb.White.Println("If not present, May be try \"geniee login\" to generate one\n")
 		os.Exit(1)
 	}
 
@@ -134,7 +135,8 @@ func callAPI(question, email, token string) {
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		panic(err)
+		fmt.Errorf("Could not process the request. Please check your token and email in ~/.geniee/config.json")
+		os.Exit(1)
 	}
 	defer resp.Body.Close()
 
