@@ -102,7 +102,7 @@ func AskCmd(cCtx *cli.Context) error {
 	// colors.White
 	rgb.White.Print(success)
 	rgb.Cyan.Print(note)
-	fmt.Print("\n```")
+	fmt.Print("\n```\n")
 	rgb.Green.Print(<-c1)
 	fmt.Println("\n\n```")
 

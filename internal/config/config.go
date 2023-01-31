@@ -2,6 +2,7 @@ package config
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/geniee-ai/geniee-cli/internal/helpers"
 	"github.com/spf13/viper"
@@ -16,7 +17,8 @@ var Cfg Config
 
 func LoadConfig() (*Config, error) {
 
-	if !helpers.IsExists("$HOME/.geniee/config.json") {
+	homeDir, _ := os.UserHomeDir()
+	if !helpers.IsExists(homeDir + "/.geniee/config.json") {
 		return nil, fmt.Errorf("could not find config.json")
 	}
 
