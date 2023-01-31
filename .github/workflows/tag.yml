@@ -10,12 +10,12 @@ jobs:
     - uses: actions/checkout@v2
       with:
         fetch-depth: '0'
-    - name: Setup git user
-      run: |
-          git config --global user.name "$(git --no-pager log --format=format:'%an' -n 1)"
-          git config --global user.email "$(git --no-pager log --format=format:'%ae' -n 1)"
-    - name: Bump version and push tag
-      uses: moble/github-tag-action@main
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        WITH_V: true
+    # - name: Setup git user
+    #   run: |
+    #       git config --global user.name "$(git --no-pager log --format=format:'%an' -n 1)"
+    #       git config --global user.email "$(git --no-pager log --format=format:'%ae' -n 1)"
+    # - name: Bump version and push tag
+    #   uses: moble/github-tag-action@main
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #     WITH_V: true
