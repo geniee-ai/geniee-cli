@@ -6,6 +6,9 @@ Version := $(shell git tag --sort=committerdate | tail -1)
 LDFLAGS := "-s -w -X github.com/geniee-ai/geniee-cli/version.Version=$(Version)"
 
 
+gorelease:
+	@rm -rf dist
+	@goreleaser release --clean
 
 docker-build:
 	@docker build -t geniee-cli .
