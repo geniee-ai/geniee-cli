@@ -8,7 +8,7 @@ import (
 )
 
 func ValidateToken(accessToken string) bool {
-	fmt.Print("\n")
+	fmt.Print("\n\n")
 	s := spinner.New(spinner.CharSets[9], 100*time.Millisecond) // Build our new spinner
 	s.Suffix = " Validating access token"
 	s.Color("red", "bold")

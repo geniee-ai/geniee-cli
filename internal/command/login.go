@@ -3,6 +3,7 @@ package command
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 
 	"os"
 	"syscall"
@@ -16,47 +17,41 @@ import (
 	"golang.org/x/term"
 )
 
-type credentials struct {
-	token string
-	email string
+type Credentials struct {
+	Token string `json:"token"`
+	Email string `json:"email"`
 }
 
 const (
-	cheesyCredsFolderName = ".cheesy"
-	cheesyCredsFileName   = "credentials"
-	cheesyCredsFileType   = "json"
+	genieeCredsFolderName = ".geniee"
+	genieeCredsFileName   = "config"
+	genieeCredsFileType   = "json"
 )
 
 var (
-	banner = fmt.Sprint(`
-Please login to geniee web ( https://geniee.io ) and generate API token using your browser.
-
-After login is successful, Please go to settings and generate access
-token.
-	
+	banner1 = fmt.Sprint(`
 Geniee will store the token in plain text in the following file for use by subsequent commands:
+	
+Note: Access token generated on web UI will only visible once.
 `)
 
 	proceedAsk = fmt.Sprint(`
-	
 Do you want to proceed?
 Only 'yes' will be accepted to confirm.
 `)
 
+	separator = fmt.Sprint(`
+
+---------------------------------------------------------------------------------
+
+`)
+
 	banner2 = fmt.Sprint(`
+Please login to geniee web ( https://geniee.io ) and generate API token.
 
----------------------------------------------------------------------------------
-
-Login to geniee.io and go to Settings > Create Token to generate a new token.
+Once you log into web, please generate access token.
 	
-Note: Access token generated on web UI will only visible once.
-	
----------------------------------------------------------------------------------
-
-Once Token is generated in browser, copy and paste it into the prompt below.
-
-Geniee will store the token in plain text in
-the following file for use by subsequent commands:
+Once token is generated, please enter the token generated below.
 `)
 )
 
@@ -68,28 +63,28 @@ var (
 )
 
 func LoginCmd(*cli.Context) error {
-	configPath := rgb.White.Sprintf("\t" + os.Getenv("HOME") + "/.geniee/credentials.json\n")
+	configPath := rgb.White.Sprintf("\t" + os.Getenv("HOME") + "/.geniee/" + genieeCredsFileName + "." + genieeCredsFileType)
 
-	fmt.Println(banner)
+	fmt.Println(banner1)
 	fmt.Println(configPath)
 	fmt.Println(proceedAsk)
-	white.Printf("Enter a value: ")
+	white.Printf("\tEnter a value: ")
 	response := helpers.ReadInputString()
+	fmt.Println(separator)
 
 	switch response {
 	case "yes":
 		fmt.Println(banner2)
-		fmt.Println(configPath)
 
-		white.Print("  Enter your geniee web email: ")
+		white.Print("\tEnter your geniee web email: ")
 		userEmail := helpers.ReadInputString()
 
-		white.Print("  Enter the access token: ")
+		white.Print("\tEnter the access token: ")
 		accessTokenByte, _ := term.ReadPassword(int(syscall.Stdin))
 
-		cred := &credentials{
-			token: string(accessTokenByte),
-			email: userEmail,
+		cred := Credentials{
+			Token: string(accessTokenByte),
+			Email: userEmail,
 		}
 
 		pathToHome, err := os.UserHomeDir()
@@ -97,11 +92,11 @@ func LoginCmd(*cli.Context) error {
 			return fmt.Errorf("could not find current user home directory: %v", err)
 		}
 
-		credentialsFile := fmt.Sprintf(cheesyCredsFileName + "." + cheesyCredsFileType)
-		confFolderpath := fmt.Sprintf(pathToHome + "/" + cheesyCredsFolderName)
+		credentialsFile := fmt.Sprintf(genieeCredsFileName + "." + genieeCredsFileType)
+		confFolderpath := fmt.Sprintf(pathToHome + "/" + genieeCredsFolderName)
 
 		if !helpers.IsExists(confFolderpath) {
-			err = helpers.CreateDir(pathToHome, cheesyCredsFolderName)
+			err = helpers.CreateDir(pathToHome, genieeCredsFolderName)
 			if err != nil {
 				return fmt.Errorf("could not create cheesy conf directory: %v", err)
 			}
@@ -118,7 +113,9 @@ func LoginCmd(*cli.Context) error {
 		if err != nil {
 			return fmt.Errorf("could not marshan indent: %s", err)
 		}
-		err = helpers.WriteTofile(confFolderpath+"/"+credentialsFile, file, 0755)
+
+		_ = ioutil.WriteFile(confFolderpath+"/"+credentialsFile, file, 0644)
+		// err = helpers.WriteTofile(confFolderpath+"/"+credentialsFile, file, 0755)
 		if err != nil {
 			return fmt.Errorf("could not write to file file: %v", err)
 		}

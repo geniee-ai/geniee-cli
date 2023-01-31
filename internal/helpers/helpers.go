@@ -36,8 +36,7 @@ func CreateFile(path string, fileName string) error {
 	return nil
 }
 
-func WriteTofile(name string, data []byte, perm fs.FileMode) error {
-	fmt.Println(string(data))
+func WriteTofile(path string, data []byte, perm fs.FileMode) error {
 	err := ioutil.WriteFile("test.json", data, perm)
 	if err != nil {
 		return fmt.Errorf("could not write to file: %v", err)

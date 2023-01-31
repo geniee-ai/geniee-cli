@@ -23,16 +23,6 @@ SUPPORT: support@geniee.io
 
 	`, cli.AppHelpTemplate)
 
-	// cli.VersionFlag = &cli.BoolFlag{
-	// 	Name:    "version",
-	// 	Aliases: []string{"V"},
-	// 	Usage:   "print only the version",
-	// }
-
-	// cli.VersionPrinter = func(cCtx *cli.Context) {
-	// 	fmt.Printf("version=%s revision=%s\n", cCtx.App.Version, version.Version)
-	// }
-
 	app := &cli.App{
 		Name:    AppName,
 		Version: version.Version,

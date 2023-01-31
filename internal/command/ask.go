@@ -4,12 +4,11 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-
-	"io/ioutil"
-	"log"
-	"net/http"
 	"os"
 	"time"
+
+	"io/ioutil"
+	"net/http"
 
 	"github.com/briandowns/spinner"
 	"github.com/geniee-ai/geniee-cli/internal/config"
@@ -18,13 +17,13 @@ import (
 )
 
 const (
-	GenieeAPI = "http://localhost:9090"
+	GenieeAPI = "https://api.geniee.io"
 	Endpoint  = "/ask"
 )
 
 type Request struct {
 	Question string `json:"question"`
-	UID      string `json:"uid"`
+	Email    string `json:"email"`
 }
 
 type Result map[string]interface{}
@@ -78,7 +77,16 @@ func AskCmd(cCtx *cli.Context) error {
 
 	}
 
-	uid := config.Cfg.UID
+	cfg, err := config.LoadConfig()
+	if err != nil {
+		rgb.Red.Println("Could not load config file. If not present, May be try \"geniee login\" first.")
+		fmt.Println("")
+		os.Exit(1)
+	}
+
+	// uid := cfg.UID
+	email := cfg.Email
+	token := cfg.Token
 
 	fmt.Print("\n")
 	s := spinner.New(spinner.CharSets[9], 100*time.Millisecond) // Build our new spinner
@@ -87,7 +95,7 @@ func AskCmd(cCtx *cli.Context) error {
 	s.Start()                   // Start the spinner
 	time.Sleep(4 * time.Second) // Run for some time to simulate work
 
-	go callAPI(question, uid)
+	go callAPI(question, email, token)
 	s.Stop()
 
 	// colors.White
@@ -100,22 +108,28 @@ func AskCmd(cCtx *cli.Context) error {
 	return nil
 }
 
-func callAPI(question, uid string) {
+func callAPI(question, email, token string) {
 
 	request := &Request{
 		Question: question,
-		UID:      uid,
+		Email:    email,
 	}
 
 	jsonByte, err := json.Marshal(request)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Errorf("Could not process the request. Please try again after some time.")
+		os.Exit(1)
 	}
 	req, err := http.NewRequest("POST", GenieeAPI+Endpoint, bytes.NewBuffer(jsonByte))
 	if err != nil {
-		log.Fatal(err)
+		fmt.Errorf("Could not process the request. Please try again after some time.")
+		os.Exit(1)
 	}
 	req.Header.Set("Content-Type", "application/json")
+
+	queryParams := req.URL.Query()
+	queryParams.Add("token", token)
+	req.URL.RawQuery = queryParams.Encode()
 
 	client := &http.Client{}
 	resp, err := client.Do(req)
@@ -124,13 +138,17 @@ func callAPI(question, uid string) {
 	}
 	defer resp.Body.Close()
 
-	body, _ := ioutil.ReadAll(resp.Body)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Errorf("Could not process the request. Please try again after some time.")
+		os.Exit(1)
+	}
 	response := HTTPResponse{}
 
 	err = json.Unmarshal(body, &response)
-	// Check your errors!
 	if err != nil {
-		log.Fatal(err.Error())
+		fmt.Errorf("Could not process the request. Please try again after some time.")
+		os.Exit(1)
 	}
 
 	data := response.Result["data"].(string)
