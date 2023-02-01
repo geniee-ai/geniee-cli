@@ -14,6 +14,11 @@ import (
 	"github.com/geniee-ai/geniee-cli/internal/rgb"
 )
 
+const (
+	GenieeAPI     = "https://api.geniee.io"
+	LoginEndpoint = "/login"
+)
+
 func ValidateToken(email, token string) bool {
 
 	creds := model.Credentials{
@@ -28,13 +33,12 @@ func ValidateToken(email, token string) bool {
 	time.Sleep(4 * time.Second) // Run for some time to simulate work
 	s.Stop()
 
-	URL := "http://localhost:9090/login"
 	jsonByte, err := json.Marshal(creds)
 	if err != nil {
 		fmt.Errorf("Could not marshal config data")
 		os.Exit(1)
 	}
-	req, err := http.NewRequest("POST", URL, bytes.NewBuffer(jsonByte))
+	req, err := http.NewRequest("POST", GenieeAPI+LoginEndpoint, bytes.NewBuffer(jsonByte))
 	if err != nil {
 		fmt.Errorf("Could not perform HTTP request")
 		os.Exit(1)

@@ -125,7 +125,7 @@ func LoginCmd(*cli.Context) error {
 		ok := token.ValidateToken(cred.Email, cred.Token)
 		if !ok {
 			red := color.New(color.FgRed, color.Bold).SprintFunc()
-			return fmt.Errorf("%s. Please check if you entered correct access token", red("Invalid Token"))
+			fmt.Printf("%s. Please check if you entered correct access token", red("Invalid Token"))
 		}
 
 		green := color.New(color.FgGreen, color.Bold).SprintFunc()
