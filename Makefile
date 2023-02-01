@@ -9,7 +9,7 @@ LDFLAGS := "-s -w -X github.com/geniee-ai/geniee-cli/version.Version=$(Version)"
 gorelease:
 	@rm -rf dist
 	@goreleaser release --clean
-
+	@rm -rf dist
 docker-build:
 	@docker build -t geniee-cli .
 
