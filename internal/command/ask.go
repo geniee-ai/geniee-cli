@@ -13,12 +13,13 @@ import (
 	"github.com/briandowns/spinner"
 	"github.com/geniee-ai/geniee-cli/internal/config"
 	"github.com/geniee-ai/geniee-cli/internal/rgb"
+	log "github.com/sirupsen/logrus"
 	"github.com/urfave/cli/v2"
 )
 
 const (
-	GenieeAPI = "https://api.geniee.io"
-	Endpoint  = "/ask"
+	GenieeAPI   = "https://api.geniee.io"
+	AskEndpoint = "/ask"
 )
 
 type Request struct {
@@ -63,8 +64,6 @@ Note: It might take a while to parse response in the terminal. Please have patie
 
 func AskCmd(cCtx *cli.Context) error {
 
-	// fmt.Println(len(cCtx.NArg().Get))
-
 	var (
 		question string
 	)
@@ -82,6 +81,7 @@ func AskCmd(cCtx *cli.Context) error {
 		rgb.Red.Println("\nCould not load config file. Please validate config.json file in ~/.geniee/config.json")
 		fmt.Println("")
 		rgb.White.Println("If not present, May be try \"geniee login\" to generate one\n")
+		log.Debug(err.Error())
 		os.Exit(1)
 	}
 
@@ -118,12 +118,14 @@ func callAPI(question, email, token string) {
 
 	jsonByte, err := json.Marshal(request)
 	if err != nil {
-		fmt.Errorf("Could not process the request. Please try again after some time.")
+		fmt.Println("Could not process the request.")
+		log.Debug(err.Error())
 		os.Exit(1)
 	}
-	req, err := http.NewRequest("POST", GenieeAPI+Endpoint, bytes.NewBuffer(jsonByte))
+	req, err := http.NewRequest("POST", GenieeAPI+AskEndpoint, bytes.NewBuffer(jsonByte))
 	if err != nil {
-		fmt.Errorf("Could not process the request. Please try again after some time.")
+		fmt.Println("Could not process the request.")
+		log.Debug(err.Error())
 		os.Exit(1)
 	}
 	req.Header.Set("Content-Type", "application/json")
@@ -135,25 +137,40 @@ func callAPI(question, email, token string) {
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		fmt.Errorf("Could not process the request. Please check your token and email in ~/.geniee/config.json")
+		fmt.Println("Could not process the request. Please check your token and email in ~/.geniee/config.json")
+		log.Debug(err.Error())
 		os.Exit(1)
 	}
 	defer resp.Body.Close()
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		fmt.Errorf("Could not process the request. Please try again after some time.")
+		fmt.Println("Could not process the request.")
+		log.Debug(err.Error())
 		os.Exit(1)
 	}
 	response := HTTPResponse{}
 
 	err = json.Unmarshal(body, &response)
 	if err != nil {
-		fmt.Errorf("Could not process the request. Please try again after some time.")
+		fmt.Println("Could not process the request")
+		log.Debug(err.Error())
 		os.Exit(1)
 	}
 
-	data := response.Result["data"].(string)
-	c1 <- data
+	switch response.StatusCode {
+	case http.StatusUnauthorized:
+		rgb.Red.Print("Invalid token or email\n")
+		fmt.Println("")
+		rgb.White.Print("Please verify your token and email value in ~/.geniee/config.json\n\n")
+		os.Exit(1)
+	case http.StatusOK:
+		data := response.Result["data"].(string)
+		c1 <- data
+	default:
+		rgb.White.Print("Could not process the request\n")
+		log.Debug(response.Error)
+		os.Exit(1)
+	}
 
 }

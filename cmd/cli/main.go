@@ -3,11 +3,12 @@ package main
 import (
 	"fmt"
 
-	"log"
 	"os"
 
 	"github.com/geniee-ai/geniee-cli/internal/command"
 	"github.com/geniee-ai/geniee-cli/version"
+	"github.com/sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 	"github.com/urfave/cli/v2"
 )
 
@@ -15,7 +16,33 @@ const (
 	AppName = "Geniee"
 )
 
+func init() {
+	var logLevel string
+	logLevel = os.Getenv("GENIEE_LOG_LEVEL")
+	// LOG_LEVEL not set, let's default to debug
+	switch logLevel {
+	case "debug":
+		logLevel = "debug"
+	case "error":
+		logLevel = "error"
+	default:
+		logLevel = "info"
+	}
+	// parse string, this is built-in feature of logrus
+	ll, err := logrus.ParseLevel(logLevel)
+	if err != nil {
+		ll = logrus.DebugLevel
+	}
+	// set global log level
+	logrus.SetLevel(ll)
+	log.SetFormatter(&log.TextFormatter{
+		DisableColors: true,
+		FullTimestamp: true,
+	})
+}
+
 func main() {
+
 	cli.AppHelpTemplate = fmt.Sprintf(`%s
 WEBSITE: http://geniee.io
 

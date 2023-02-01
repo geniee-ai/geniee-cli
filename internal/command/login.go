@@ -10,17 +10,14 @@ import (
 
 	"github.com/fatih/color"
 	"github.com/geniee-ai/geniee-cli/internal/helpers"
+	"github.com/geniee-ai/geniee-cli/internal/model"
 	"github.com/geniee-ai/geniee-cli/internal/rgb"
 	"github.com/geniee-ai/geniee-cli/internal/token"
+	log "github.com/sirupsen/logrus"
 
 	"github.com/urfave/cli/v2"
 	"golang.org/x/term"
 )
-
-type Credentials struct {
-	Token string `json:"token"`
-	Email string `json:"email"`
-}
 
 const (
 	genieeCredsFolderName = ".geniee"
@@ -82,13 +79,14 @@ func LoginCmd(*cli.Context) error {
 		white.Print("\tEnter the access token: ")
 		accessTokenByte, _ := term.ReadPassword(int(syscall.Stdin))
 
-		cred := Credentials{
+		cred := &model.Credentials{
 			Token: string(accessTokenByte),
 			Email: userEmail,
 		}
 
 		pathToHome, err := os.UserHomeDir()
 		if err != nil {
+			log.Debug(err.Error())
 			return fmt.Errorf("could not find current user home directory: %v", err)
 		}
 
@@ -98,30 +96,33 @@ func LoginCmd(*cli.Context) error {
 		if !helpers.IsExists(confFolderpath) {
 			err = helpers.CreateDir(pathToHome, genieeCredsFolderName)
 			if err != nil {
-				return fmt.Errorf("could not create cheesy conf directory: %v", err)
+				log.Debug(err.Error())
+				return fmt.Errorf("could not create geniee conf directory: %v", err)
 			}
 		}
 
 		if !helpers.IsExists(confFolderpath + "/" + credentialsFile) {
 			err = helpers.CreateFile(confFolderpath, credentialsFile)
 			if err != nil {
-				return fmt.Errorf("could not create cheesy creds file: %v", err)
+				log.Debug(err.Error())
+				return fmt.Errorf("could not create geniee creds file: %v", err)
 			}
 		}
 
-		file, _ := json.MarshalIndent(cred, "", " ")
+		file, err := json.MarshalIndent(cred, "", " ")
 		if err != nil {
+			log.Debug(err.Error())
 			return fmt.Errorf("could not marshan indent: %s", err)
 		}
 
 		_ = ioutil.WriteFile(confFolderpath+"/"+credentialsFile, file, 0644)
 		// err = helpers.WriteTofile(confFolderpath+"/"+credentialsFile, file, 0755)
 		if err != nil {
+			log.Debug(err.Error())
 			return fmt.Errorf("could not write to file file: %v", err)
 		}
 
-		// // TODO ( validate token )
-		ok := token.ValidateToken(string(accessTokenByte))
+		ok := token.ValidateToken(cred.Email, cred.Token)
 		if !ok {
 			red := color.New(color.FgRed, color.Bold).SprintFunc()
 			return fmt.Errorf("%s. Please check if you entered correct access token", red("Invalid Token"))
