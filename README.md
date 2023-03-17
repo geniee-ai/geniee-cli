@@ -52,12 +52,17 @@ WEBSITE: https://geniee.io
 
 ## Improvements
 
-[X] Add ability for user to manage their own token
-[X] Support for longer questions
-[X] Migrated to ChatGPT 3.5
-[ ] Make it more interactive
-[ ] Implement caching for frequent similarly asked questions
-[ ] TBD
+- [x] Add ability for user to manage their own token
+
+- [x] Support for longer questions
+
+- [x] Migrated to ChatGPT 3.5
+
+- [ ] Make usage more interactive with follow up questions
+
+- [ ] Implement caching for frequent similarly asked questions
+
+- [ ] TBD
 
 
 
