@@ -7,7 +7,7 @@ Geniee is a CLI based tool which allows you to use ChatGPT directly from termina
 
 ## Setup
 
-1. Signup to https://geniee.io and generate a access token. Log into web, and go to Dashboard > Create token (*Note: Token are only shown once so place copy and save it somewhere.*)
+1. Signup to https://geniee.io and generate a access token. Log into web, and go to Dashboard > Create token (*Note: Token are only shown once, so copy and save it somewhere safe.*)
 
 2. Install Geniee CLI
 
