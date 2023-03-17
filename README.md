@@ -3,7 +3,7 @@
 
 # Geniee
 
-Geniee is a CLI based tool which allows you to use ChatGPT directly from terminal.
+Geniee is a CLI-based tool that allows you to use ChatGPT directly from the terminal.
 
 # Installation
 
@@ -24,11 +24,9 @@ chmod +x /usr/local/bin/geniee
 
 ## Setup
 
-1. Signup to https://geniee.io and generate a access token. Log into web, and go to Dashboard > Create token (*Note: Token are only shown once, so copy and save it somewhere safe.*)
+1. Sign up for https://geniee.io and generate an access token. Log in to the web application, and navigate to Dashboard > Create Token (Note: Tokens are only shown once, so be sure to copy and save it somewhere safe.).
 
-2. Install Geniee CLI
-
-
+2. Install Geniee CLI according to the specifications of your operating system.
 
 3. Login using `geniee login`
 
@@ -54,9 +52,9 @@ A Dockerfile is a text file that contains commands that are used to build a Dock
 ## Available commands
 
 
-`geniee login`: Authenticated against geniee web services and login. This is one time step, unless you rotated your access token from web. (*Note: Here you would provide the access token generated from geniee web. *)
+`geniee login`: Authenticate against Geniee web services and log in. This is a one-time step unless you have rotated your access token from the web. (Note: Here, you would provide the access token generated from Geniee web.)
 
-`geniee ask` : Ask questions to ChatGPT using geniee CLI. You would need to login before using this command.
+`geniee ask` : Ask questions to ChatGPT using Geniee CLI. Before using this command, you will need to log in.
 
 `geniee version` : Show current app version 
 
@@ -66,13 +64,13 @@ A Dockerfile is a text file that contains commands that are used to build a Dock
 
 - [x] Support for longer questions
 
-- [x] Migrated to ChatGPT 3.5
+- [x] Migrate to ChatGPT 3.5
 
 - [ ] Make usage more interactive with follow up questions
 
 - [ ] Implement caching for frequent similarly asked questions
 
-- [ ] Pass file as an input option and get response based on that.
+- [ ] Ability to pass file as an argument and get response based on that.
 
 - [ ] TBD
 
