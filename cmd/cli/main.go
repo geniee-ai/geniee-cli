@@ -44,7 +44,7 @@ func init() {
 func main() {
 
 	cli.AppHelpTemplate = fmt.Sprintf(`%s
-WEBSITE: http://geniee.io
+WEBSITE: https://geniee.io
 
 SUPPORT: support@geniee.io
 
