@@ -5,16 +5,30 @@
 
 Geniee is a CLI based tool which allows you to use ChatGPT directly from terminal.
 
+# Installation
+
+## OSX 
+
+```shell
+brew tap --cask geniee
+brew install pgaijin66/geniee
+```
+
+## Linux
+
+```shell
+curl https://github.com/geniee-ai/geniee-cli/releases/download/v0.1.2/geniee_0.1.2_linux_amd64
+mv geniee_0.1.2_linux_amd64 /usr/local/bin/geniee
+chmod +x /usr/local/bin/geniee
+```
+
 ## Setup
 
 1. Signup to https://geniee.io and generate a access token. Log into web, and go to Dashboard > Create token (*Note: Token are only shown once, so copy and save it somewhere safe.*)
 
 2. Install Geniee CLI
 
-```shell
-brew tap --cask geniee
-brew install pgaijin66/geniee
-```
+
 
 3. Login using `geniee login`
 
@@ -57,6 +71,8 @@ A Dockerfile is a text file that contains commands that are used to build a Dock
 - [ ] Make usage more interactive with follow up questions
 
 - [ ] Implement caching for frequent similarly asked questions
+
+- [ ] Pass file as an input option and get response based on that.
 
 - [ ] TBD
 
