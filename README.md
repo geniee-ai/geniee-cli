@@ -17,7 +17,7 @@ brew install pgaijin66/geniee
 ## Linux
 
 ```shell
-curl https://github.com/geniee-ai/geniee-cli/releases/download/v0.1.2/geniee_0.1.2_linux_amd64
+wget https://github.com/geniee-ai/geniee-cli/releases/download/v0.1.2/geniee_0.1.2_linux_amd64
 mv geniee_0.1.2_linux_amd64 /usr/local/bin/geniee
 chmod +x /usr/local/bin/geniee
 ```
