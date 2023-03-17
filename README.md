@@ -1,4 +1,7 @@
-# geniee-cli
+![geniee](assets/geniee.png)
+
+
+# Geniee
 
 Geniee is a CLI based tool which allows you to use ChatGPT directly from terminal.
 
@@ -21,34 +24,11 @@ brew install pgaijin66/geniee
 ## Available commands
 
 
-```shell
-$ geniee help
+`geniee login`: Authenticated against geniee web services and login. This is one time step, unless you rotated your access token from web. (*Note: Here you would provide the access token generated from geniee web. If you have r*)
 
-NAME:
-   Geniee - ask any questions directly from terminal
+`geniee ask` : Ask questions to ChatGPT using geniee CLI. You would need to login before using this command.
 
-USAGE:
-   Geniee [global options] command [command options] [arguments...]
-
-VERSION:
-   v0.1.2
-
-COMMANDS:
-   ask, a      Ask questions
-   login, l    Obtain and save credentials from cheesy web.
-   version, v  Show version
-   help, h     Shows a list of commands or help for one command
-
-GLOBAL OPTIONS:
-   --help, -h     show help (default: false)
-   --version, -v  print the version (default: false)
-
-WEBSITE: https://geniee.io
-
-```
-
-
-
+`geniee version` : Show current app version 
 
 ## Improvements
 
@@ -64,5 +44,9 @@ WEBSITE: https://geniee.io
 
 - [ ] TBD
 
+
+## Website
+
+https://geniee.io
 
 
