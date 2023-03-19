@@ -14,6 +14,18 @@ brew tap pgaijin66/geniee
 brew install --cask geniee
 ```
 
+For OSX users:
+
+When you first run `geniee` command, apple security will pick it up and prompt you. To continue using it, you will have to allow it in security and privacy settings.
+
+Steps to allow:
+
+1. Go to System Settings > Privacy and Security2. 
+
+2. Scroll below until you find the prompt. Click allow
+
+3. Run `geniee` command again, and click 'open'. This is a onetime thing and you won't have to do it again.
+
 ## Linux
 
 ```shell
