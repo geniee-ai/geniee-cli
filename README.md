@@ -10,8 +10,8 @@ Geniee is a CLI-based tool that allows you to use ChatGPT directly from the term
 ## OSX 
 
 ```shell
-brew tap --cask geniee
-brew install pgaijin66/geniee
+brew tap pgaijin66/geniee
+brew install --cask geniee
 ```
 
 ## Linux
