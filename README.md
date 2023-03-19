@@ -24,7 +24,7 @@ Steps to allow:
 
 2. Scroll below until you find the prompt. Click allow
 
-3. Run `geniee` command again, and click 'open'. This is a onetime thing and you won't have to do it again.
+3. Run `geniee` command again, and click 'open'. This is a one time thing and you won't have to do it again.
 
 ## Linux
 
