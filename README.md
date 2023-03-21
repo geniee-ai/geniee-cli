@@ -46,9 +46,15 @@ chmod +x /usr/local/bin/geniee
 
 We are working on making geniee available for windows user via Chocolately in the mean time you can take advantage of geniee using WSL feature.
 
-1. Install WSL ( ubuntu ) on windows
+1. Install WSL ( ubuntu ) on windows. Please follow this guide to install WSL ( https://pureinfotech.com/install-windows-subsystem-linux-2-windows-10 )
 
-2. Once installed, follow the installation procedure for Linux as usual.
+2. Once installed, you would need to reboot your PC
+
+3. Once rebooted, search for WSL and open it.
+
+4. It will setup ubuntu ( default distro for WSL ) and ask you to setup username / password
+
+5. Once completed, follow the installation procedure for Linux shown above to install and run geniee.
 
 ## Setup
 
