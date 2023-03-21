@@ -34,6 +34,22 @@ mv geniee_0.1.2_linux_amd64 /usr/local/bin/geniee
 chmod +x /usr/local/bin/geniee
 ```
 
+## Linux
+
+```shell
+wget https://github.com/geniee-ai/geniee-cli/releases/download/v0.1.2/geniee_0.1.2_linux_amd64
+mv geniee_0.1.2_linux_amd64 /usr/local/bin/geniee
+chmod +x /usr/local/bin/geniee
+```
+
+## Windows
+
+We are working on making geniee available for windows user via Chocolately in the mean time you can take advantage of geniee using WSL feature.
+
+1. Install WSL ( ubuntu ) on windows
+
+2. Once installed, follow the installation procedure for Linux as usual.
+
 ## Setup
 
 1. Sign up for https://geniee.io and generate an access token. Log in to the web application, and navigate to Dashboard > Create Token (Note: Tokens are only shown once, so be sure to copy and save it somewhere safe.).
